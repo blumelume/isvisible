@@ -11,18 +11,25 @@ LICENSE file in the root directory of this source tree.
 
 $.fn.isvisible = function() {
     let t = this;
+    
     let element = {
         el: t,
-        height: t.outerHeight(),
-        top: t[0].offsetTop,
-        bottom: t.offset().top + t.outerHeight()
-    }
+        init: function () {
+            this.height = this.el.outerHeight();
+            this.top = this.el[0].offsetTop;
+            this.bottom = this.top + this.el.outerHeight();
+        }
+    };
+    element.init();
     let parent = {
         el: element.el.parent(),
-        height: element.el.parent().height(),
-        top: element.el.parent().scrollTop(),
-        bottom: element.el.parent().scrollTop() + element.el.parent().height()
+        init: function () {
+            this.height = this.el.height();
+            this.top = this.el.scrollTop();
+            this.bottom = this.top + this.el.height();
+        }
     }
+    parent.init();
     
     return (parent.top <= element.top && parent.bottom > element.top) || (parent.top > element.top && parent.top < element.bottom);
 };
